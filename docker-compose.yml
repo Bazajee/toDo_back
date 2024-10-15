@@ -1,0 +1,53 @@
+
+services:
+
+  db:
+    build: 
+      context: ./db
+      dockerfile: Dockerfile
+    restart: on-failure
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MARIADB_DATABASE}
+      MYSQL_USER: ${MARIADB_USER}
+      MYSQL_PASSWORD: ${MARIADB_PASSWORD}
+    volumes:
+      - ./db/data:/var/lib/mysql
+      - ./db/init:/docker-entrypoint-initdb.d/
+    ports:
+      - "${MARIADB_PORT}:${MARIADB_PORT}"
+
+
+  admirer:
+    image: adminer
+    restart: on-failure
+    ports:
+      - 8080:8080
+
+  nest:
+    build:
+      context: ./nest_app
+      dockerfile: Dockerfile.dev
+    depends_on:
+      - db
+    ports:
+      - "${NEST_RUNNING_PORT}:${NEST_RUNNING_PORT}"
+      - "5555:5555" # only in dev 
+    volumes:
+      - ./nest_app:/app  
+      - /app/node_modules
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      SHADOW_DATABASE_URL: ${SHADOW_DATABASE_URL}
+      NEST_RUNNING_PORT :  ${NEST_RUNNING_PORT}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      
+  #   image: nginx
+  #   restart: always
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - .back-end/nginx:/etc/nginx/conf.d/default.conf
+
+
+
