@@ -1,7 +1,8 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
-import * as cookieParser from 'cookie-parser';
+import { NestFactory } from '@nestjs/core'
+import { AppModule } from './app.module'
+import { ValidationPipe } from '@nestjs/common'
+import * as cookieParser from 'cookie-parser'
+
 
 async function bootstrap() {
     const port = parseInt(process.env.NEST_RUNNING_PORT);
@@ -13,7 +14,5 @@ async function bootstrap() {
       });
     app.use(cookieParser());
     await app.listen(port);
-
-    
 }
 bootstrap();
