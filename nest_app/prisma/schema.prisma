@@ -34,18 +34,18 @@ model UserGroup{
 }
 
 model Note{
-    id          Int         @id @default(autoincrement())
-    creationDate DateTime    @default(now())
-    isDelete    Boolean     @default(false)
-    title       String
-    owners      NoteOwner[]
-    listBlocks  ListBlock[]
-    textBlocks  TextBlock[]
+    id              Int         @id @default(autoincrement())
+    creationDate    DateTime    @default(now())
+    isDeleted       Boolean     @default(false)
+    title           String
+    owners          NoteOwner[]
+    listBlocks      ListBlock[]
+    textBlocks      TextBlock[]
 }
 
 model NoteOwner{
     id          Int         @id @default(autoincrement())
-    isDelete    Boolean     @default(false)
+    isDeleted   Boolean     @default(false)
     userId      Int      
     noteId      Int
     
@@ -59,8 +59,8 @@ model NoteOwner{
 
 model ListBlock{
     id              Int         @id @default(autoincrement())
-    isDelete        Boolean     @default(false)
-    creationDate     DateTime    @default(now())
+    isDeleted       Boolean     @default(false)
+    creationDate    DateTime    @default(now())
     title           String  
     placeNumber     Int
     noteId          Int
@@ -77,6 +77,7 @@ model ListItem{
     state           Boolean
     text            String
     listBlockId     Int
+    lastUpdated     DateTime    @updatedAt 
 
     listBlock       ListBlock   @relation(fields: [listBlockId], references: [id])
 
@@ -87,9 +88,9 @@ model ListItem{
 
 model TextBlock{
     id              Int         @id @default(autoincrement())
-    isDelete        Boolean     @default(false)
+    isDeleted       Boolean     @default(false)
     creationDate    DateTime    @default(now())
-    lastUpdate      DateTime    @default(now())
+    lastUpdated     DateTime    @updatedAt 
     title           String?  
     placeNumber     Int?
     noteId          Int
