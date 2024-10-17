@@ -6,6 +6,8 @@ import { AuthModule } from '../auth/auth.module'
 import { RolesGuard } from '../auth/roles/roles.guard'
 import { JwtModule } from '@nestjs/jwt'
 import { AuthGuard } from '../auth/roles/isAuth.guard'
+import { NoteOwnerModule } from 'src/core/note-owner/note-owner.module'
+import { NoteOwnerService } from 'src/core/note-owner/note-owner.service'
 
 
 @Module({
@@ -16,6 +18,6 @@ import { AuthGuard } from '../auth/roles/isAuth.guard'
     }),
   ], 
   controllers: [NoteManagerController],
-  providers: [NoteManagerService, AuthGuard]
+  providers: [NoteManagerService, AuthGuard, NoteOwnerService]
 })
 export class NoteManagerModule {}

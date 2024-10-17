@@ -27,7 +27,8 @@ export class NoteManagerController {
     ) {
         // console.log(request)
         // const user = this.auth.getAuthUser(request.cookies)
-        console.log('in')
-        return await this.noteManagerService.createNote(dto)
+        console.log(dto)
+        const newNote = await this.noteManagerService.createNote(dto)
+        
     }
 }
