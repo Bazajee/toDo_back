@@ -37,7 +37,7 @@ model Note{
     id              Int         @id @default(autoincrement())
     creationDate    DateTime    @default(now())
     isDeleted       Boolean     @default(false)
-    title           String
+    title           String?
     owners          NoteOwner[]
     listBlocks      ListBlock[]
     textBlocks      TextBlock[]
@@ -61,8 +61,8 @@ model ListBlock{
     id              Int         @id @default(autoincrement())
     isDeleted       Boolean     @default(false)
     creationDate    DateTime    @default(now())
-    title           String  
-    placeNumber     Int
+    title           String?  
+    placeNumber     Int?
     noteId          Int
     list            ListItem[]
 
