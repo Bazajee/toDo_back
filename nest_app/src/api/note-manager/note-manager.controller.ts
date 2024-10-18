@@ -25,10 +25,8 @@ export class NoteManagerController {
         @Body() dto: NoteDto,
         @Req() request: Request,
     ) {
-        // console.log(request)
-        // const user = this.auth.getAuthUser(request.cookies)
-        console.log(dto)
-        const newNote = await this.noteManagerService.createNote(dto)
-        
+
+        const addNote = await this.noteManagerService.createNote(dto, request)
+
     }
 }

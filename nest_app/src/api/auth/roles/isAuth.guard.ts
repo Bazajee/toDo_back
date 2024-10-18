@@ -3,26 +3,23 @@ import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { UsersService } from 'src/core/user/users.service';
+import { AuthService } from '../auth.service';
 
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(
-    private reflector: Reflector,
-    private jwtService: JwtService,
-    private userService: UsersService,
+    constructor(
+        private reflector: Reflector,
+        private jwtService: JwtService,
+        private usersService: UsersService,
+        private authService: AuthService
 ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request: Request = context.switchToHttp().getRequest()
-    const jwtToken = request.cookies.jwt
-    if (!jwtToken) {
-        throw new UnauthorizedException('Auth cookie is not detected.')
-    }
-    const decodedCookie = this.jwtService.verify(jwtToken)
-    const user = await this.userService.getUserByEmail(decodedCookie.email)
-    if (user.id != decodedCookie.userId) {
-      throw new UnauthorizedException('User authentification failed.')
+    const authUser = await this.authService.getUserFromCookie(request.cookies)
+    if (!authUser) {
+        return false 
     }
     return true 
   }

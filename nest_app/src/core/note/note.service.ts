@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common'
+import { Injectable, BadRequestException, InternalServerErrorException } from '@nestjs/common'
 import { PrismaService  } from '../prisma/prisma.service'
 import { Prisma, Note } from '@prisma/client'
 import { request } from 'http'
@@ -8,7 +8,7 @@ import { title } from 'process'
 export class NoteService {
     constructor(private prisma: PrismaService) {}
     
-    async createNote (requestData?: {
+    async createNoteInstance (requestData?: {
         title?: string
     }) {
         if (Object.entries(requestData).length != 0) {
@@ -16,12 +16,16 @@ export class NoteService {
                 throw new BadRequestException('Arg format is invalid.')
             }
         }
-
-        return await this.prisma.note.create({
-            data: {
-                title: requestData.title
-            }
-        })
+        try {
+            return await this.prisma.note.create({
+                data: {
+                    title: requestData.title
+                }
+            })
+        } catch {
+            throw new InternalServerErrorException('Creation in database failed.')
+        }
+        
     }
 
 }

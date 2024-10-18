@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException} from '@nestjs/common';
+import { Injectable, BadRequestException, UnauthorizedException} from '@nestjs/common';
 import { PrismaService } from 'src/core/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
@@ -84,8 +84,16 @@ export class AuthService {
         }
     }
 
-    async getAuthUser (cookie: Object) {
-        console.log('cookie:',cookie)
-
+    async getUserFromCookie(cookie) {
+        const jwtToken = cookie.jwt
+        if (!jwtToken) {
+            throw new UnauthorizedException('Auth cookie is not detected.')
+        }
+        const decodedCookie = this.jwtService.verify(jwtToken)
+        const user = await this.usersService.getUserByEmail(decodedCookie.email)
+        if (user.id != decodedCookie.userId) {
+        throw new UnauthorizedException('User authentification failed.')
+        }
+        return user
     }
 }
