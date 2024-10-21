@@ -3,10 +3,8 @@ import { NoteManagerController } from './note-manager.controller'
 import { NoteManagerService } from './note-manager.service'
 import { NoteModule } from 'src/core/note/note.module'
 import { AuthModule } from '../auth/auth.module'
-import { RolesGuard } from '../auth/roles/roles.guard'
 import { JwtModule } from '@nestjs/jwt'
 import { AuthGuard } from '../auth/roles/isAuth.guard'
-import { NoteOwnerModule } from 'src/core/note-owner/note-owner.module'
 import { NoteOwnerService } from 'src/core/note-owner/note-owner.service'
 
 

@@ -46,7 +46,7 @@ model Note{
 model NoteOwner{
     id          Int         @id @default(autoincrement())
     isDeleted   Boolean     @default(false)
-    userId      Int      
+    userId      Int         
     noteId      Int
     
     user        User        @relation(fields: [userId], references: [id])

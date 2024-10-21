@@ -1,10 +1,13 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service'
 import { Prisma, NoteOwner } from '@prisma/client'
 
 @Injectable()
 export class NoteOwnerService {
-    constructor(private prisma: PrismaService) {}
+    constructor(
+        private prisma: PrismaService
+
+    ) {}
 
     async createNoteOwner (requestData: {
         userId: number,
@@ -20,6 +23,23 @@ export class NoteOwnerService {
         }catch {
             throw new InternalServerErrorException('Creation in database failed.')
         }
+        
+    }
+
+    async getNotesOwned (requestData: {userId?: number}) {
+        try {
+            
+            return  await this.prisma.noteOwner.findMany({
+                where: {
+                    userId: requestData.userId, 
+                    isDeleted: false
+                }
+            })
+        } catch {
+            throw new InternalServerErrorException('Retrieves owned notes failed .')
+        }
+
+        
         
     }
 }

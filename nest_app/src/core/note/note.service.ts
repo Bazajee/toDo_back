@@ -1,12 +1,16 @@
 import { Injectable, BadRequestException, InternalServerErrorException } from '@nestjs/common'
 import { PrismaService  } from '../prisma/prisma.service'
-import { Prisma, Note } from '@prisma/client'
+import { Prisma } from '@prisma/client'
 import { request } from 'http'
 import { title } from 'process'
 
 @Injectable()
 export class NoteService {
-    constructor(private prisma: PrismaService) {}
+    constructor(
+        private prisma: PrismaService,
+
+
+    ) {}
     
     async createNoteInstance (requestData?: {
         title?: string
@@ -24,6 +28,21 @@ export class NoteService {
             })
         } catch {
             throw new InternalServerErrorException('Creation in database failed.')
+        }
+    }
+
+    async getNotes ( notesId: number | number [] ) {
+        try {
+            const noteIdsArray = Array.isArray(notesId) ? notesId : [notesId];
+            return await this.prisma.note.findMany({
+                where : {
+                    id : {
+                        in : noteIdsArray
+                    }
+                }
+            })
+        }catch{
+            throw new InternalServerErrorException('Note extraction from database failed.')
         }
         
     }

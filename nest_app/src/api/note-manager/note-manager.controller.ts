@@ -25,8 +25,14 @@ export class NoteManagerController {
         @Body() dto: NoteDto,
         @Req() request: Request,
     ) {
-
-        const addNote = await this.noteManagerService.createNote(dto, request)
-
+        return await this.noteManagerService.createNote(dto, request)
     }
+
+    @IsAuth()
+    @Get('get-notes')
+    async getAllNotes (
+        @Req() request: Request,
+    ){
+        return await this.noteManagerService.getUserNotes(request)
+    } 
 }
