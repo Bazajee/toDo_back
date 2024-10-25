@@ -28,8 +28,18 @@ export class NoteManagerService {
         return {notes}
     }
 
+    // delete
+    async removeNote (noteId): Promise<Boolean> {
+        const deletedNote = await this.note.deleteNote(noteId)
+        if (deletedNote.id == noteId) {
+            return true
+        }else{
+            return false
+        } 
+    }
 
     // update
-    // delete
+    
+
 
 }

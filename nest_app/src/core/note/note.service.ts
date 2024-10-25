@@ -47,4 +47,18 @@ export class NoteService {
         
     }
 
+    async deleteNote (noteId: number) {
+        console.log(noteId)
+        try {
+            
+            return  await this.prisma.note.delete({
+                where: {
+                    id : noteId
+                }
+            })
+        }catch{
+            throw new InternalServerErrorException('Deleted in database failed.')
+        }
+    }
+
 }

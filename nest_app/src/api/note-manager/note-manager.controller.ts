@@ -35,4 +35,13 @@ export class NoteManagerController {
     ){
         return await this.noteManagerService.getUserNotes(request)
     } 
+
+    @IsAuth()
+    @Post('delete-note')
+    async removeNote (
+        @Req() request: Request,
+        @Body() dto: NoteDto,
+    ){
+        return await this.noteManagerService.removeNote(dto.noteId)
+    } 
 }
