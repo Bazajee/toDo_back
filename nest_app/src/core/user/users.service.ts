@@ -1,6 +1,6 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
-import { Prisma, User } from '@prisma/client';
-import { PrismaService } from 'src/core/prisma/prisma.service';
+import { Injectable, BadRequestException } from '@nestjs/common'
+import { Prisma, User } from '@prisma/client'
+import { PrismaService } from 'src/core/prisma/prisma.service'
 
 import * as bcrypt from 'bcrypt';
 

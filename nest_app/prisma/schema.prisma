@@ -15,20 +15,95 @@ datasource db {
 
 }
 
+
 model User {
-    id          Int    @id @default(autoincrement())
+    id          Int         @id @default(autoincrement())
     name        String
-    email       String @unique
+    email       String      @unique
     password    String
     groupId     Int? 
-        userGroup   UserGroup? @relation(fields: [groupId], references: [id]) 
+    notes       NoteOwner[]
 
+    userGroup   UserGroup?  @relation(fields: [groupId], references: [id]) 
 }
 
-// rename "group" in "role"
 model UserGroup{
-    id          Int    @id @default(autoincrement())
-    group       String @unique 
-        user        User[]
+    id          Int         @id @default(autoincrement())
+    group       String      @unique 
+    user        User[]
 }
+
+model Note{
+    id              Int         @id @default(autoincrement())
+    creationDate    DateTime    @default(now())
+    isDeleted       Boolean     @default(false)
+    title           String?
+    owners          NoteOwner[]
+    listBlocks      ListBlock[]
+    textBlocks      TextBlock[]
+}
+
+model NoteOwner{
+    id          Int         @id @default(autoincrement())
+    isDeleted   Boolean     @default(false)
+    userId      Int         
+    noteId      Int
+    
+    user        User        @relation(fields: [userId], references: [id])
+    note        Note        @relation(fields: [noteId], references: [id])
+
+    @@unique([userId, noteId])
+    @@index([userId])
+    @@index([noteId])
+}
+
+model ListBlock{
+    id              Int         @id @default(autoincrement())
+    isDeleted       Boolean     @default(false)
+    creationDate    DateTime    @default(now())
+    title           String?  
+    placeNumber     Int?
+    noteId          Int
+    list            ListItem[]
+
+    note            Note        @relation(fields: [noteId], references: [id])
+
+    @@index([noteId])
+
+}
+
+model ListItem{
+    id              Int         @id @default(autoincrement())
+    state           Boolean
+    text            String
+    listBlockId     Int
+    lastUpdated     DateTime    @updatedAt 
+
+    listBlock       ListBlock   @relation(fields: [listBlockId], references: [id])
+
+    @@index([listBlockId])
+
+}
+
+
+model TextBlock{
+    id              Int         @id @default(autoincrement())
+    isDeleted       Boolean     @default(false)
+    creationDate    DateTime    @default(now())
+    lastUpdated     DateTime    @updatedAt 
+    title           String?  
+    placeNumber     Int?
+    noteId          Int
+    text            String?
+
+    note            Note        @relation(fields: [noteId], references: [id])
+
+    @@index([noteId])
+}
+
+
+
+
+
+
 
