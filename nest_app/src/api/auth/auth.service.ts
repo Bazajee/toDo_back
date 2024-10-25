@@ -1,9 +1,9 @@
-import { Injectable, BadRequestException} from '@nestjs/common';
+import { Injectable, BadRequestException, UnauthorizedException} from '@nestjs/common';
 import { PrismaService } from 'src/core/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/core/user/users.service';
-import { GroupService } from 'src/group/group.service';
+import { GroupService } from 'src/core/group/group.service';
 import { constants } from 'buffer';
 
 
@@ -11,7 +11,7 @@ import { constants } from 'buffer';
 export class AuthService {
     constructor(
         private usersService: UsersService,
-        private prisma: PrismaService,
+        // private prisma: PrismaService,
         private jwtService: JwtService,
         private GroupService: GroupService
 
@@ -33,7 +33,7 @@ export class AuthService {
         if (!user) {
             return { message: 'User not found.' };
         }
-        const isPasswordValid = this.validatePassword(
+        const isPasswordValid =  await this.validatePassword(
             body.password,
             user.password,
         );
@@ -58,7 +58,7 @@ export class AuthService {
         email: string;
         password: string;
     }): Promise<{ message: string; token?: string, userData?: object  }> {
-        console.log(body.password)
+
         try {
             const user = await this.usersService.getUserByEmail(body.email)
             if (!user) {
@@ -69,7 +69,7 @@ export class AuthService {
                 body.password,
                 user.password,
             )
-            console.log(isPasswordValid)
+
             if (!isPasswordValid) {
                 return { message: 'Password is invalid' }
             }
@@ -82,5 +82,18 @@ export class AuthService {
         }catch (error) {
             throw new BadRequestException(`${error}`)
         }
+    }
+
+    async getUserFromCookie(cookie) {
+        const jwtToken = cookie.jwt
+        if (!jwtToken) {
+            throw new UnauthorizedException('Auth cookie is not detected.')
+        }
+        const decodedCookie = this.jwtService.verify(jwtToken)
+        const user = await this.usersService.getUserByEmail(decodedCookie.email)
+        if (user.id != decodedCookie.userId) {
+        throw new UnauthorizedException('User authentification failed.')
+        }
+        return user
     }
 }
