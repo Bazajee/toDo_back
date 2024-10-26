@@ -31,6 +31,7 @@ export class NoteManagerService {
     // delete
     async removeNote (noteId): Promise<Boolean> {
         const deletedNote = await this.note.deleteNote(noteId)
+        console.log(deletedNote)
         if (deletedNote.id == noteId) {
             return true
         }else{
