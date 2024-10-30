@@ -11,7 +11,8 @@ export class NoteManagerService {
         private noteOwner : NoteOwnerService,
         private authService: AuthService
     ) {}
-    // create
+
+    // Create a new note and relative instance 
     async createNote (requestBody, request): Promise<Object> {
         const noteInstance = await this.note.createNoteInstance(requestBody)
         const user = await this.authService.getUserFromCookie(request.cookies)
@@ -19,7 +20,7 @@ export class NoteManagerService {
         return {noteOwner: noteOwnerInstance, note: noteInstance}
     }
 
-    // init
+    // Get all note of auth user
     async getUserNotes (request): Promise<Object> {
         const user = await this.authService.getUserFromCookie(request.cookies)
         const notesOwned = await this.noteOwner.getNotesOwned({userId: user.id})
@@ -28,8 +29,19 @@ export class NoteManagerService {
         return {notes}
     }
 
+    // ! Never delete instance in database
+    async removeNote (noteId): Promise<Boolean> {
+        const deletedNote = await this.note.deleteNote(noteId)
+        const deletedNoteOwner = await this.noteOwner.deleteNoteOwnerFromNote(noteId)
+        if (deletedNote.id == noteId) {
+            return true
+        }else{
+            return false
+        } 
+    }
 
     // update
-    // delete
+    
+
 
 }

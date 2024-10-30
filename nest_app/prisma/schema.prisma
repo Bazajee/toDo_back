@@ -38,7 +38,7 @@ model Note{
     creationDate    DateTime    @default(now())
     isDeleted       Boolean     @default(false)
     title           String?
-    owners          NoteOwner[]
+    owners          NoteOwner[] 
     listBlocks      ListBlock[]
     textBlocks      TextBlock[]
 }
@@ -50,7 +50,7 @@ model NoteOwner{
     noteId      Int
     
     user        User        @relation(fields: [userId], references: [id])
-    note        Note        @relation(fields: [noteId], references: [id])
+    note        Note        @relation(fields: [noteId], references: [id], onDelete: Cascade)
 
     @@unique([userId, noteId])
     @@index([userId])

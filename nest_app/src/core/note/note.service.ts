@@ -38,13 +38,31 @@ export class NoteService {
                 where : {
                     id : {
                         in : noteIdsArray
-                    }
-                }
+                },
+                isDeleted: false
+                },
+                
             })
         }catch{
             throw new InternalServerErrorException('Note extraction from database failed.')
         }
         
+    }
+
+    async deleteNote (noteId: number) {
+        try {
+            
+            return await this.prisma.note.update({
+                where: {
+                    id : noteId
+                },
+                data: {
+                    isDeleted: true 
+                }
+            })
+        } catch (error) {
+            throw new InternalServerErrorException('Deleted in database failed.')
+        }
     }
 
 }
