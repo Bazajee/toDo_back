@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { NoteOwnerService } from 'src/core/note-owner/note-owner.service'
 import { NoteService } from 'src/core/note/note.service'
 import { AuthService } from '../auth/auth.service'
+import { TextBlockService } from 'src/core/text-block/text-block.service'
 
 
 @Injectable()
@@ -9,14 +10,17 @@ export class NoteManagerService {
     constructor(
         private note: NoteService,
         private noteOwner : NoteOwnerService,
-        private authService: AuthService
+        private authService: AuthService,
+        private textBlockService: TextBlockService
     ) {}
 
     // Create a new note and relative instance 
     async createNote (requestBody, request): Promise<Object> {
-        const noteInstance = await this.note.createNoteInstance(requestBody)
         const user = await this.authService.getUserFromCookie(request.cookies)
+        const noteInstance = await this.note.createNoteInstance(requestBody)
         const noteOwnerInstance = await this.noteOwner.createNoteOwner({userId: user.id, NoteId: noteInstance.id})
+        // add textblock or listBlock with bodyData
+        const noteContent = await this.textBlockService.createTextBlock(requestBody.noteContent)
         return {noteOwner: noteOwnerInstance, note: noteInstance}
     }
 
