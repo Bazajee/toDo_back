@@ -5,7 +5,7 @@ Back-end of ToDo application made with MariaDB, Nest Js, Prisma and Docker.
 
 The application is structured into 2 main parts. The API part and the Core part. The aim is to separate application logic and database queries to improve maintainability.
 ### API: 
-This folder contains all parts of the application with a url endpoint, and must be the only folder with the controller that contains the logical application and handles http requests.  
+This folder contains all parts of the application who handle a url endpoint. There must be the only folder with controller file. Api module contains the logical application and handles http requests.  
 ### Core:
 The folder contains all prisma queries and core functionality. The module created inside must correspond to the model or nitialize a library.
 
