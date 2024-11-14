@@ -18,6 +18,15 @@ There is a folder for each useful container (db, nginx, nest).
  - nginx -> Contains the web server configuration to be defined.
 
 ## Memo
+
+docker-compose logs -tf nest  
+
+docker-compose exec -it nest /bin/bash  -> npx prisma studio (localhost:5555) / npm install 
+
 check db/ and data/ right (must be 775)
+
 run npm install on your local machine for dev
+
 add sanitize and test
+
+
