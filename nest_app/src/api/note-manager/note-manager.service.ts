@@ -47,7 +47,6 @@ export class NoteManagerService {
         const deletedNote = await this.note.deleteNote(noteId)
         const deletedNoteOwner = await this.noteOwner.deleteNoteOwnerFromNote(noteId)
         const deletedNoteContent = await this.textBlockService.deleteTextBlock(noteId)
-        console.log(deletedNote, deletedNoteOwner, deletedNoteContent)
         if (deletedNote.id == noteId) {
             return true
         }else{
