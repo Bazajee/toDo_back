@@ -25,7 +25,6 @@ export class NoteManagerController {
         @Body() dto: NoteDto,
         @Req() request: Request,
     ) {
-        console.log('new')
         return await this.noteManagerService.createNote(dto, request)
     }
 
