@@ -40,7 +40,7 @@ export class NoteService {
                 },
                 
             })
-        }catch{
+        } catch {
             throw new InternalServerErrorException('Note extraction from database failed.')
         }
         

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Res, HttpStatus, Req, UseGuards } from '@nestjs/common'
+import { Controller, Get, Post, Body, Res, HttpStatus, Req, UseGuards, Query } from '@nestjs/common'
 import { NoteManagerService } from './note-manager.service'
 import { NoteDto } from './dto/note.dto'
 import { AuthService } from '../auth/auth.service'
@@ -25,9 +25,11 @@ export class NoteManagerController {
         @Body() dto: NoteDto,
         @Req() request: Request,
     ) {
+        console.log('new')
         return await this.noteManagerService.createNote(dto, request)
     }
 
+    // This endpoint is call after every successfull auth in front and must return all related user data.
     @IsAuth()
     @Get('get-notes')
     async getAllNotes (
@@ -39,9 +41,17 @@ export class NoteManagerController {
     @IsAuth()
     @Post('delete-note')
     async removeNote (
-        @Req() request: Request,
         @Body() dto: NoteDto,
     ){
         return await this.noteManagerService.removeNote(dto.noteId)
     } 
+
+    @IsAuth()
+    @Get('get-note-content')
+    async getNoteContent(
+        @Query('noteId') noteId: number, 
+    ) {
+        return await this.noteManagerService.getNoteContent(noteId)
+    }
+    
 }
