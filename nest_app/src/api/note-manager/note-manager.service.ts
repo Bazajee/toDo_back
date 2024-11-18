@@ -20,14 +20,15 @@ export class NoteManagerService {
         const user = await this.authService.getUserFromCookie(request.cookies)
         const noteInstance = await this.note.createNoteInstance(requestBody)
         const noteOwnerInstance = await this.noteOwner.createNoteOwner({userId: user.id, NoteId: noteInstance.id})
-        if (requestBody.noteContent.textData) {
-            const newTextBlock = await this.textBlockService.createTextBlock(noteInstance.id, requestBody.noteContent.textData, 0 )
-        } else if (requestBody.noteContent.listData) {
-            // create list block instance 
-        } else {
-            // throw error here because DTO can't check key value
-            throw new InternalServerErrorException('Note can be create without content.')
+        // console.log(requestBody.noteContent)
+        if (requestBody.noteContent) {
+            if (requestBody.noteContent.textData )  {
+                const newTextBlock = await this.textBlockService.createTextBlock(noteInstance.id, requestBody.noteContent.textData, 0 )
+            } else if (requestBody.noteContent.listData !== null)  {
+                // create list block instance 
+            } 
         }
+
         
         
         return {noteOwner: noteOwnerInstance, note: noteInstance}
