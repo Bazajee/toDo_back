@@ -17,6 +17,12 @@ There is a folder for each useful container (db, nginx, nest).
  - nest -> Contains nest application.
  - nginx -> Contains the web server configuration to be defined.
 
+
+## Database
+
+<img width="2448" alt="Untitled" src="https://github.com/user-attachments/assets/11060667-cde1-47ff-9064-7981b9fb1dd5">
+
+
 ## Memo
 
 docker-compose logs -tf nest  
