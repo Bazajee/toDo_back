@@ -10,8 +10,8 @@ export class TextBlockService {
         private noteService : NoteService
     ) {}
 
-    // Place is use to handle dispaling order of an note content (textBlock and listBlock). 
-    // Like an array firstposition is 0.
+    // Place is use to handle displaying order of an note content (textBlock and listBlock). 
+    // Like an array first position is 0.
     createTextBlock = ( 
         noteId: number,
         textData: string, 
@@ -85,6 +85,8 @@ export class TextBlockService {
             })
         } catch  (error) {
             throw new InternalServerErrorException('Text content retrieval failed.')
+            
+
         }
     }
 }

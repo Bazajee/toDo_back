@@ -28,9 +28,6 @@ export class NoteManagerService {
                 // create list block instance 
             } 
         }
-
-        
-        
         return {noteOwner: noteOwnerInstance, note: noteInstance}
     }
 
@@ -64,6 +61,32 @@ export class NoteManagerService {
                 "textBlock" : allTextBlock,
                 // "listBlock": define allListBlock
             }
+        }
+    }
+
+    async updateBlockText (requestBody) {
+        try {
+            return await this.textBlockService.updateTextBlock(parseInt(requestBody.blockId), requestBody.noteContent.textData )
+        } catch (error) {
+            throw new InternalServerErrorException('Text update failed.')
+        }
+    }
+
+    async createBlockText (requestBody) {
+        try {
+            if (requestBody.noteContent) {
+                if (requestBody.noteContent.textData )  {
+                    const newBlockText = await this.textBlockService.createTextBlock(parseInt(requestBody.noteId), requestBody.noteContent.textData, parseInt(requestBody.place) )
+                    console.log(newBlockText)
+                    // check place 
+                    return newBlockText
+                } else if (requestBody.noteContent.listData !== null)  {
+                    // create list block instance 
+                } 
+            }
+        } catch (error) {
+            console.log(error)
+            throw new InternalServerErrorException('Text update failed.')
         }
     }
 

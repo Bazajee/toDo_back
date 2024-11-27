@@ -52,5 +52,21 @@ export class NoteManagerController {
     ) {
         return await this.noteManagerService.getNoteContent(noteId)
     }
+
+    @IsAuth()
+    @Post('update-text')
+    async updateTextContent(
+        @Body() dto: NoteDto,
+    ) {
+        return await this.noteManagerService.updateBlockText(dto)
+    }
+
+    @IsAuth()
+    @Post('create-content')
+    async createTextContent(
+        @Body() dto: NoteDto,
+    ) {
+        return await this.noteManagerService.createBlockText(dto)
+    }
     
 }
