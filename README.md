@@ -29,6 +29,8 @@ docker-compose logs -tf nest
 
 docker-compose exec -it nest /bin/bash  -> npx prisma studio (localhost:5555) / npm install 
 
+npm i --save-dev @types/node
+
 check db/ and data/ right (must be 775)
 
 run npm install on your local machine for dev
