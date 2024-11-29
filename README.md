@@ -29,6 +29,8 @@ docker-compose logs -tf nest
 
 docker-compose exec -it nest /bin/bash  -> npx prisma studio (localhost:5555) / npm install 
 
+npm rebuild bcrypt --build-from-source
+
 npm i --save-dev @types/node
 
 check db/ and data/ right (must be 775)
