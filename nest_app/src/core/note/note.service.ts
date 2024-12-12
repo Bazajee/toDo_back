@@ -46,7 +46,9 @@ export class NoteService {
         
     }
 
-    async deleteNote (noteId: number) {
+    async deleteNote (
+        noteId: number
+    ) {
         try {
             
             return await this.prisma.note.update({

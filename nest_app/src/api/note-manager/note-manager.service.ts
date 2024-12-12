@@ -3,6 +3,7 @@ import { NoteOwnerService } from 'src/core/note-owner/note-owner.service'
 import { NoteService } from 'src/core/note/note.service'
 import { AuthService } from '../auth/auth.service'
 import { TextBlockService } from 'src/core/text-block/text-block.service'
+import { text } from 'stream/consumers'
 
 
 @Injectable()
@@ -42,6 +43,7 @@ export class NoteManagerService {
 
     // ! Never delete instance in database, update isDeleted attribute
     async removeNote (noteId): Promise<Boolean> {
+        noteId = parseInt(noteId)    
         const deletedNote = await this.note.deleteNote(noteId)
         const deletedNoteOwner = await this.noteOwner.deleteNoteOwnerFromNote(noteId)
         const deletedNoteContent = await this.textBlockService.deleteTextBlock(noteId)
@@ -51,6 +53,19 @@ export class NoteManagerService {
             return false
         } 
     }
+
+    // Must return the object that has been updated
+    async deleteTextBlock (textBlockId) {
+        try {
+            textBlockId = parseInt(textBlockId)
+            return await this.textBlockService.deleteTextBlock(textBlockId)
+        } catch (error) {
+            console.log(error)
+            throw new InternalServerErrorException('Text update failed.')
+        }
+    }
+
+
 
     // Return related content of a note. Front need final data for handle a good displaying
     async getNoteContent (noteId): Promise<Object> {
@@ -77,7 +92,7 @@ export class NoteManagerService {
             if (requestBody.noteContent) {
                 if (requestBody.noteContent.textData )  {
                     const newBlockText = await this.textBlockService.createTextBlock(parseInt(requestBody.noteId), requestBody.noteContent.textData, parseInt(requestBody.place) )
-                    console.log(newBlockText)
+                    console.log("blockText:",newBlockText)
                     // check place 
                     return newBlockText
                 } else if (requestBody.noteContent.listData !== null)  {
@@ -89,5 +104,4 @@ export class NoteManagerService {
             throw new InternalServerErrorException('Text update failed.')
         }
     }
-
 }

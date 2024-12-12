@@ -12,13 +12,13 @@ export class TextBlockService {
 
     // Place is use to handle displaying order of an note content (textBlock and listBlock). 
     // Like an array first position is 0.
-    createTextBlock = ( 
+    createTextBlock ( 
         noteId: number,
         textData: string, 
         place?: number, 
         title?: string, 
         
-    ) => {
+    ) {
         try { 
             return this.prisma.textBlock.create({
                 data: {
@@ -33,29 +33,30 @@ export class TextBlockService {
             }   
     }
 
-    deleteTextBlock = (
-        noteId: number
-    )=> {
+    async deleteTextBlock  (
+        textBlockId: number
+    ) {
         try{
-            return this.prisma.textBlock.updateMany({
+            return await this.prisma.textBlock.update({
                 where: {
-                    noteId : noteId
+                    id : textBlockId
                 },
                 data: {
                     isDeleted: true
                 }
             })
+            
         } catch {
             throw new InternalServerErrorException('Text content deletion failed.')
         }
     }
 
-    updateTextBlock = (
+    async updateTextBlock  (
         textBlockId: number, 
         newText: string
-    ) => {
+    ) {
         try {
-            return this.prisma.textBlock.update({
+            return await this.prisma.textBlock.update({
                 where: {
                     id: textBlockId
                 },
@@ -70,9 +71,9 @@ export class TextBlockService {
     }
 
     // Caution to not return deleted data.
-    getAllTextBlock = async (
+    async getAllTextBlock  (
         noteId: number
-    ) => {
+    )  {
         try {
             const note = await this.noteService.getNotes(noteId)
             if (note.length <= 0) {
@@ -80,12 +81,14 @@ export class TextBlockService {
             }
             return await this.prisma.textBlock.findMany({
                 where: {
-                    noteId : noteId
+                    noteId : noteId,
+                    isDeleted: false
+
                 },
             })
         } catch  (error) {
             throw new InternalServerErrorException('Text content retrieval failed.')
-            
+
 
         }
     }

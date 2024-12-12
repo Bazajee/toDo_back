@@ -38,11 +38,19 @@ export class NoteManagerController {
     } 
 
     @IsAuth()
-    @Post('delete-note')
+    @Get('delete-note')
     async removeNote (
-        @Body() dto: NoteDto,
+        @Query('noteId') noteId: number, 
     ){
-        return await this.noteManagerService.removeNote(dto.noteId)
+        return await this.noteManagerService.removeNote(noteId)
+    } 
+
+    @IsAuth()
+    @Get('delete-text-block')
+    async removeTextBlock (
+        @Query('noteId') noteId: number, 
+    ){
+        return await this.noteManagerService.deleteTextBlock(noteId)
     } 
 
     @IsAuth()
