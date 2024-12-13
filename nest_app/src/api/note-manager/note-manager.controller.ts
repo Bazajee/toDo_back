@@ -11,7 +11,7 @@ import { AuthGuard } from '../auth/roles/isAuth.guard'
 
 
 
-@Controller('note-manager')
+@Controller('api/note-manager')
 @UseGuards(AuthGuard)
 export class NoteManagerController {
     constructor (
