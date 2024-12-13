@@ -28,7 +28,8 @@ export class TextBlockService {
                     text: textData,
                 }
             })
-        } catch {
+        } catch (error) {
+            console.log(error)
             throw new InternalServerErrorException('Text content creation failed.')
             }   
     }
@@ -46,7 +47,8 @@ export class TextBlockService {
                 }
             })
             
-        } catch {
+        } catch (error) {
+            console.log(error)
             throw new InternalServerErrorException('Text content deletion failed.')
         }
     }
@@ -65,7 +67,8 @@ export class TextBlockService {
                 }
 
             })
-        } catch {
+        } catch (error) {
+            console.log(error)
             throw new InternalServerErrorException('Text content update failed.')
         }
     }
@@ -87,7 +90,8 @@ export class TextBlockService {
                 },
             })
         } catch  (error) {
-            throw new InternalServerErrorException('Text content retrieval failed.')
+            console.log(error)
+            throw new InternalServerErrorException('Text content retrieval failed')
 
 
         }

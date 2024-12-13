@@ -23,7 +23,8 @@ export class NoteService {
                     title: requestData.title
                 }
             })
-        } catch {
+        } catch (error) {
+            console.log(error)
             throw new InternalServerErrorException('Creation in database failed.')
         }
     }
@@ -40,7 +41,8 @@ export class NoteService {
                 },
                 
             })
-        } catch {
+        } catch (error) {
+            console.log(error)
             throw new InternalServerErrorException('Note extraction from database failed.')
         }
         
@@ -60,6 +62,7 @@ export class NoteService {
                 }
             })
         } catch (error) {
+            console.log(error)
             throw new InternalServerErrorException('Deleted in database failed.')
         }
     }

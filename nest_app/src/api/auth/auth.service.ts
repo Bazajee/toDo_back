@@ -21,7 +21,11 @@ export class AuthService {
         plainPassword: string,
         hashedPassword: string,
     ): Promise<boolean> {
-        return await bcrypt.compare(plainPassword, hashedPassword);
+        try {
+            return await bcrypt.compare(plainPassword, hashedPassword);
+        } catch (error) {
+            throw new BadRequestException(`${error}`)
+        }
     }
 
     // Handle REST API authentification with a jwtToken
@@ -48,9 +52,13 @@ export class AuthService {
     }
 
     async signUp(body: { email: string; username: string; password: string }) {
-        console.log('body->',body)
-        const newUser = await this.usersService.createUser(body);
-        return newUser;
+        try{
+            const newUser = await this.usersService.createUser(body);
+            return newUser
+        } catch (error){
+            throw new BadRequestException(`${error}`)
+        }
+
     }
 
     // Handle front-end authentification with cookie and jwt-token
@@ -58,7 +66,6 @@ export class AuthService {
         email: string;
         password: string;
     }): Promise<{ message: string; token?: string, userData?: object  }> {
-
         try {
             const user = await this.usersService.getUserByEmail(body.email)
             if (!user) {

@@ -35,8 +35,9 @@ export class NoteOwnerService {
                     isDeleted: false
                 }
             })
-        } catch {
-            throw new InternalServerErrorException('Retrieves owned notes failed .')
+        } catch (error) {
+            console.log(error)
+            throw new InternalServerErrorException('Retrieves owned notes failed.')
         }
     }
 
@@ -62,6 +63,7 @@ export class NoteOwnerService {
                 }
             })
         } catch (error) {
+            console.log(error)
             throw new InternalServerErrorException('Deleted in database failed.')
         }
     }
