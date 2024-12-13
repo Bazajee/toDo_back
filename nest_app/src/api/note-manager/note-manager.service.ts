@@ -22,7 +22,6 @@ export class NoteManagerService {
             const user = await this.authService.getUserFromCookie(request.cookies)
             const noteInstance = await this.note.createNoteInstance(requestBody)
             const noteOwnerInstance = await this.noteOwner.createNoteOwner({userId: user.id, NoteId: noteInstance.id})
-            // console.log(requestBody.noteContent)
             if (requestBody.noteContent) {
                 if (requestBody.noteContent.textData )  {
                     const newTextBlock = await this.textBlockService.createTextBlock(noteInstance.id, requestBody.noteContent.textData, 0 )
