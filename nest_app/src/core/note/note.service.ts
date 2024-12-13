@@ -1,14 +1,11 @@
 import { Injectable, BadRequestException, InternalServerErrorException } from '@nestjs/common'
 import { PrismaService  } from '../prisma/prisma.service'
-import { Prisma } from '@prisma/client'
-import { request } from 'http'
-import { title } from 'process'
+
 
 @Injectable()
 export class NoteService {
     constructor(
         private prisma: PrismaService,
-
 
     ) {}
     
@@ -26,7 +23,8 @@ export class NoteService {
                     title: requestData.title
                 }
             })
-        } catch {
+        } catch (error) {
+            console.log(error)
             throw new InternalServerErrorException('Creation in database failed.')
         }
     }
@@ -43,13 +41,16 @@ export class NoteService {
                 },
                 
             })
-        }catch{
+        } catch (error) {
+            console.log(error)
             throw new InternalServerErrorException('Note extraction from database failed.')
         }
         
     }
 
-    async deleteNote (noteId: number) {
+    async deleteNote (
+        noteId: number
+    ) {
         try {
             
             return await this.prisma.note.update({
@@ -61,6 +62,7 @@ export class NoteService {
                 }
             })
         } catch (error) {
+            console.log(error)
             throw new InternalServerErrorException('Deleted in database failed.')
         }
     }

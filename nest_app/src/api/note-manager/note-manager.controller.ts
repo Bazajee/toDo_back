@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Res, HttpStatus, Req, UseGuards } from '@nestjs/common'
+import { Controller, Get, Post, Body, Res, HttpStatus, Req, UseGuards, Query } from '@nestjs/common'
 import { NoteManagerService } from './note-manager.service'
 import { NoteDto } from './dto/note.dto'
 import { AuthService } from '../auth/auth.service'
@@ -28,6 +28,7 @@ export class NoteManagerController {
         return await this.noteManagerService.createNote(dto, request)
     }
 
+    // This endpoint is call after every successfull auth in front and must return all related user data.
     @IsAuth()
     @Get('get-notes')
     async getAllNotes (
@@ -37,11 +38,43 @@ export class NoteManagerController {
     } 
 
     @IsAuth()
-    @Post('delete-note')
+    @Get('delete-note')
     async removeNote (
-        @Req() request: Request,
-        @Body() dto: NoteDto,
+        @Query('noteId') noteId: number, 
     ){
-        return await this.noteManagerService.removeNote(dto.noteId)
+        return await this.noteManagerService.removeNote(noteId)
     } 
+
+    @IsAuth()
+    @Get('delete-text-block')
+    async removeTextBlock (
+        @Query('noteId') noteId: number, 
+    ){
+        return await this.noteManagerService.deleteTextBlock(noteId)
+    } 
+
+    @IsAuth()
+    @Get('get-note-content')
+    async getNoteContent(
+        @Query('noteId') noteId: number, 
+    ) {
+        return await this.noteManagerService.getNoteContent(noteId)
+    }
+
+    @IsAuth()
+    @Post('update-text')
+    async updateTextContent(
+        @Body() dto: NoteDto,
+    ) {
+        return await this.noteManagerService.updateBlockText(dto)
+    }
+
+    @IsAuth()
+    @Post('create-content')
+    async createTextContent(
+        @Body() dto: NoteDto,
+    ) {
+        return await this.noteManagerService.createBlockText(dto)
+    }
+    
 }

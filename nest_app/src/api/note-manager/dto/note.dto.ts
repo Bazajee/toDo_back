@@ -9,4 +9,9 @@ export class NoteDto {
     @IsInt()
     @IsOptional()
     noteId: string
+
+    @IsString()
+    @IsOptional()
+    noteContent: Object
+    
 }

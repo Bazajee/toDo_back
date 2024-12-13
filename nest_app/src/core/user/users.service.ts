@@ -96,8 +96,8 @@ export class UsersService {
         password: string;
     }) {
         //  Update a User if new data is detect. Set only the field you want to be editable
-        let changes = [];
-        let newData = {};
+        let changes = []
+        let newData = {}
         
         const user = await this.prisma.user.findUnique({
             where: { email: requestData.email },
@@ -120,11 +120,17 @@ export class UsersService {
         }
     
         if (changes.length > 0) {
-            await this.prisma.user.update({
-                where: { email: requestData.email },
-                data: newData,
-            });
-            return `The following updates succeeded: ${changes.join(', ')}`;
+            try {
+                await this.prisma.user.update({
+                    where: { email: requestData.email },
+                    data: newData,
+                });
+                return `The following updates succeeded: ${changes.join(', ')}`
+            }catch (error) {
+                console.log(error)
+                throw new BadRequestException(`Auth failed.`)
+            }
+
         }
         return 'No changes detected';
     }
