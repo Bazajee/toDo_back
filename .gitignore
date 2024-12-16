@@ -3,3 +3,5 @@ db/data/
 nest_app/dist
 nest_app/node_modules
 nest_app/prisma/migrations/
+nest_app/.env
+.DS_Store     
