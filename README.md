@@ -45,13 +45,21 @@ add sanitize and test
 ### Prod ->
 #### Deploy:
 Check db setup and PM2
+
 npm install 
+
 npx prisma db push
+
 npx prisma generate
+
 npx prisma migrate deploy
+
 npx prisma deploy
+
 npm run build
+
 pm2 start dist/main.js --name nest-app --env production
+
 
 
 
