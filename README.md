@@ -25,6 +25,7 @@ There is a folder for each useful container (db, nginx, nest).
 
 ## Memo
 
+### Dev ->
 docker-compose logs -tf nest  
 
 docker-compose exec -it nest /bin/bash  -> npx prisma studio (localhost:5555) / npm install 
@@ -40,4 +41,17 @@ run npm install on your local machine for dev
 run npm install on your local machine for dev
 
 add sanitize and test
+
+### Prod ->
+#### Deploy:
+Check db setup and PM2
+npm install 
+npx prisma db push
+npx prisma generate
+npx prisma migrate deploy
+npx prisma deploy
+npm run build
+pm2 start dist/main.js --name nest-app --env production
+
+
 
