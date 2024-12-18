@@ -37,9 +37,9 @@ export class AuthController {
             // update for production 
             httpOnly: true,
             maxAge: 3600000,
-            secure: true,  
-            sameSite: 'strict',
-            domain: process.env.NODE_ENV === 'production' ? 'todo.salesthomas.fr' : 'localhost',
+            secure: process.env.NODE_ENV === 'production', 
+            sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax', 
+            domain: process.env.NODE_ENV === 'production' ? '.salesthomas.fr' : undefined,
         });
 
         return response
