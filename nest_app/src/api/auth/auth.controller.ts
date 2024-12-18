@@ -35,11 +35,11 @@ export class AuthController {
         }
         response.cookie('jwt', logInResult.token, {
             // update for production 
-            httpOnly: false,
+            httpOnly: true,
             maxAge: 3600000,
-            secure: false,  
-            sameSite: 'lax',
-            domain: 'localhost',
+            secure: true,  
+            sameSite: 'strict',
+            domain: process.env.NODE_ENV === 'production' ? 'todo.salesthomas.fr' : 'localhost',
         });
 
         return response

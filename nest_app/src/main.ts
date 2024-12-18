@@ -13,6 +13,8 @@ async function bootstrap() {
         origin: process.env.NODE_ENV === 'production' ? 'https://todo.salesthomas.fr' : 'http://localhost:5173', 
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', 
         credentials: true,
+
+
       });
     app.use(cookieParser());
     await app.listen(port);
