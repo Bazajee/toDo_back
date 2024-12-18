@@ -7,11 +7,10 @@ dotenv.config({ path: '.env.production' });
 
 
 async function bootstrap() {
-    console.log('DATABASE_URL:', process.env.DATABASE_URL);
     const port = parseInt(process.env.NEST_RUNNING_PORT);
     const app = await NestFactory.create(AppModule)
     app.enableCors({
-        origin: 'http://localhost:5173', 
+        origin: process.env.NODE_ENV === 'production' ? 'https://todo.salesthomas.fr' : 'http://localhost:5173', 
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', 
         credentials: true,
       });
